@@ -42,7 +42,7 @@ $('body').on('click', '#enquiry', function(){
                     <p class="mt-1 text-sm text-gray-500 h-32 break-words">${article.snippet}</p>
                 </div>
             </div>
-            <div class="buttons">
+            <div data-buttons="${article.article_id}">
                 <div class="-mt-px flex divide-x divide-gray-200">
                     <div class="flex w-0 flex-1">
                         <div data-token="${response.interaction_access_token}" data-article="${article.article_id}" class="resolve relative -mr-px inline-flex w-0 flex-1 items-center justify-center rounded-bl-lg border border-transparent py-4 text-sm font-medium text-gray-700 hover:text-gray-500">
@@ -90,10 +90,8 @@ $('body').on('click', '.resolve', function(){
 
     $.ajax(settings).done(function (response) {
         console.log(response);
-        $('li').addClass('bg-gray-100');
-        $(`[data-source="${article}"]`).removeClass('bg-gray-100');
         $(`[data-source="${article}"]`).addClass('bg-green-100');
-        $('.buttons').hide();
+        $(`[data-buttons="${article}"]`).hide();
     });
 });
 
@@ -120,10 +118,8 @@ $('body').on('click', '.reject', function(){
 
     $.ajax(settings).done(function (response) {
         console.log(response);
-        $('li').addClass('bg-gray-100');
-        $(`[data-source="${article}"]`).removeClass('bg-gray-100');
         $(`[data-source="${article}"]`).addClass('bg-red-100');
-        $('.buttons').hide();
+        $(`[data-buttons="${article}"]`).hide();
     });
 });
 
