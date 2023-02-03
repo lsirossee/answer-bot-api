@@ -11,6 +11,7 @@ $('body').on('click', '#enquiry', function(){
     var settings = {
         "url": "https://answer-bot-demo.verschoren.workers.dev/recommendations",
         "method": "POST",
+        "secure": true,
         "headers": {
             "Content-Type": "application/json",
         },
