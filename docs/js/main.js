@@ -92,6 +92,9 @@ $('body').on('click', '.resolve', function(){
         console.log(response);
         $(`[data-source="${article}"]`).addClass('bg-green-100');
         $(`[data-buttons="${article}"]`).hide();
+        $('#resolve_code').html(`<code>//POST to worker to resolve\n\n${JSON.stringify(payload, null, 2)}</code>`)
+        $('#resolve_code').removeClass('hidden');
+
     });
 });
 
@@ -120,6 +123,8 @@ $('body').on('click', '.reject', function(){
         console.log(response);
         $(`[data-source="${article}"]`).addClass('bg-red-100');
         $(`[data-buttons="${article}"]`).hide();
+        $('#reject_code').html(`<code>//POST to worker to reject\n\n${JSON.stringify(payload, null, 2)}</code>`)
+        $('#reject_code').removeClass('hidden');
     });
 });
 
