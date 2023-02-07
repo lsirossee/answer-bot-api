@@ -1,3 +1,12 @@
+const subdomain = 'subdomain' //your Zendesk subdomain
+const headers_body = {
+  'content-type': 'application/json;charset=UTF-8',
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': '*',
+  'Access-Control-Allow-Methods': 'GET,HEAD,POST,OPTIONS',
+  'Access-Control-Max-Age': '86400',
+}
+      
 export default {
   async fetch(request, env) {
     try {
@@ -10,8 +19,7 @@ export default {
           //Get the incoming enquiry
           var enquiry = JSON.stringify(await request.json());
 
-          //Set API URL
-          const url = 'https://internalnote.zendesk.com/api/v2/answer_bot/answers/articles';
+          const url = 'https://'+subdomain+'.zendesk.com/api/v2/answer_bot/answers/articles';
 
           const init = {
             body: enquiry,
@@ -21,19 +29,12 @@ export default {
               'Authorization': 'Basic abc123def456xyz789=',
             },
           };
+          
           const response = await fetch(url, init);
           const results = await response.json();
           
-          return new Response(
-            JSON.stringify(results), {
-              headers: {
-                'content-type': 'application/json;charset=UTF-8',
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Headers': '*',
-                'Access-Control-Allow-Methods': 'GET,HEAD,POST,OPTIONS',
-                'Access-Control-Max-Age': '86400',
-              }
-            });
+          //return an array of suggested articles
+          return new Response(JSON.stringify(results), {headers: headers_body});
         }
 
         if (pathname.startsWith("/resolve")) {
@@ -41,7 +42,7 @@ export default {
           var payload = JSON.stringify(await request.json());
 
           //Set API URL
-          const url = 'https://internalnote.zendesk.com/api/v2/answer_bot/resolution';
+          const url = 'https://'+subdomain+'.zendesk.com/api/v2/answer_bot/resolution';
 
           const init = {
             body: payload,
@@ -52,16 +53,7 @@ export default {
           };
           const response = await fetch(url, init);
           const results = await response.status;
-          return new Response(
-            JSON.stringify(results), {
-              headers: {
-                'content-type': 'application/json;charset=UTF-8',
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Headers': '*',
-                'Access-Control-Allow-Methods': 'GET,HEAD,POST,OPTIONS',
-                'Access-Control-Max-Age': '86400',
-              }
-            });
+          return new Response(JSON.stringify(results), {headers: headers_body});
         }
 
         if (pathname.startsWith("/reject")) {
@@ -69,7 +61,7 @@ export default {
           var payload = JSON.stringify(await request.json());
 
           //Set API URL
-          const url = 'https://internalnote.zendesk.com/api/v2/answer_bot/rejection';
+          const url = 'https://'+subdomain+'.zendesk.com/api/v2/answer_bot/rejection';
 
           const init = {
             body: payload,
@@ -80,39 +72,13 @@ export default {
           };
           const response = await fetch(url, init);
           const results = await response.status;
-          return new Response(
-            JSON.stringify(results), {
-              headers: {
-                'content-type': 'application/json;charset=UTF-8',
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Headers': '*',
-                'Access-Control-Allow-Methods': 'GET,HEAD,POST,OPTIONS',
-                'Access-Control-Max-Age': '86400',
-              }
-            });
+          return new Response(JSON.stringify(results), {headers: headers_body});
         }
         
-        return new Response(OK, {
-            status: 200,
-            headers: {
-              'Access-Control-Allow-Origin': '*',
-              'Access-Control-Allow-Headers': '*',
-              'Access-Control-Allow-Methods': 'GET,HEAD,POST,OPTIONS',
-              'Access-Control-Max-Age': '86400',
-            },
-        });
+        return new Response(OK, {status: 200,headers: headers_body});
       }
     } catch(e) {
-      return new Response(err.stack, {
-        status: 500,
-        headers: {
-          'content-type': 'application/json;charset=UTF-8',
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'GET,HEAD,POST,OPTIONS',
-          'Access-Control-Max-Age': '86400',
-          'Access-Control-Allow-Headers': '*',
-        },
-      });
+      return new Response(err.stack, {status: 500,headers: headers_body});
     }
   }
 }
